@@ -1,4 +1,6 @@
 package e.wallpaper
+
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Pixmap
 import com.badlogic.gdx.graphics.TextureData
 import com.badlogic.gdx.files.FileHandle
@@ -23,9 +25,11 @@ class ASTCData(val file: FileHandle) : TextureData {
         if (magic != 0x5CA1AB13) throw GdxRuntimeException("Not a valid ASTC file")
         val blockX = buffer.get().toInt() and 0xFF
         val blockY = buffer.get().toInt() and 0xFF
+        val blockZ = buffer.get().toInt() and 0xFF // 3D 纹理通常为 1
 
         width = (buffer.get().toInt() and 0xFF) or ((buffer.get().toInt() and 0xFF) shl 8) or ((buffer.get().toInt() and 0xFF) shl 16)
         height = (buffer.get().toInt() and 0xFF) or ((buffer.get().toInt() and 0xFF) shl 8) or ((buffer.get().toInt() and 0xFF) shl 16)
+        val depth = (buffer.get().toInt() and 0xFF) or ((buffer.get().toInt() and 0xFF) shl 8) or ((buffer.get().toInt() and 0xFF) shl 16)
         internalFormat = when ("$blockX x $blockY") {
             "4 x 4" -> 0x93B0
             "6 x 6" -> 0x93B4
@@ -37,7 +41,7 @@ class ASTCData(val file: FileHandle) : TextureData {
         isPrepared = true
     }
     override fun consumeCustomData(target: Int) {
-        com.badlogic.gdx.Gdx.gl30.glCompressedTexImage2D(
+        Gdx.gl30.glCompressedTexImage2D(
             target, 0, internalFormat, width, height, 0, data!!.remaining(), data
         )
     }
