@@ -1,0 +1,19 @@
+plugins {
+  // Applies the foojay-resolver plugin to allow automatic download of JDKs.
+  id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+}
+
+dependencyResolutionManagement {
+  // 强制所有模块使用这里定义的仓库，防止 core 模块找不到库
+  repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+  repositories {
+    google()
+    mavenCentral()
+    // 关键：告诉 Gradle 去哪里找 gdx-basis-universal
+    maven { url = uri("https://jitpack.io") }
+  }
+}
+// A list of which subprojects to load as part of the same larger project.
+// You can remove Strings from the list and reload the Gradle project
+// if you want to temporarily disable a subproject.
+include 'android', 'core'

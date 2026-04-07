@@ -1,0 +1,41 @@
+dependencies {
+  // --- 1. LibGDX 核心及扩展 ---
+  api "com.badlogicgames.ashley:ashley:$ashleyVersion"
+  api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
+  api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+  api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+  api "com.badlogicgames.gdx:gdx:$gdxVersion"
+  // --- 2. 修复后的 VisUI (改为 Maven 坐标) ---
+//  api "com.kotcrab.vis:vis-ui:$visUiVersion"
+//  api "com.badlogicgames.gdx:gdx-ktx:$gdxVersion" // 添加这一行
+  // --- 3. 精简后的 Groovy (只保留核心，排除导致安卓报错的 Swing/Console) ---
+  api ("org.apache.groovy:groovy:$groovyVersion")
+  api ("org.apache.groovy:groovy-json:$groovyVersion")
+  // 删除了 groovy-all，因为它会带入大量安卓不支持的桌面端代码
+
+  // --- 4. 核心 Kotlin 支持 ---
+  api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+  api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion"
+
+  // --- 5. LibKTX 扩展 (保留常用的，建议检查是否真的需要这么多) ---
+  api "io.github.libktx:ktx-actors:$ktxVersion"
+  api "io.github.libktx:ktx-app:$ktxVersion"
+  api "io.github.libktx:ktx-assets:$ktxVersion"
+  api "io.github.libktx:ktx-async:$ktxVersion"
+  api "io.github.libktx:ktx-box2d:$ktxVersion"
+  api "io.github.libktx:ktx-collections:$ktxVersion"
+  api "io.github.libktx:ktx-freetype:$ktxVersion"
+  api "io.github.libktx:ktx-graphics:$ktxVersion"
+  api "io.github.libktx:ktx-math:$ktxVersion"
+  api "io.github.libktx:ktx-scene2d:$ktxVersion"
+  api "io.github.libktx:ktx-style:$ktxVersion"
+  api "io.github.libktx:ktx-vis:$ktxVersion" // 注意：它会依赖 vis-ui
+
+  // --- 6. 其它游戏框架 (按需保留) ---
+  api "net.onedaybeard.artemis:artemis-odb:$artemisOdbVersion"
+
+  // --- 7. 特殊处理 ---
+  if(enableGraalNative == 'true') {
+    implementation "io.github.berstanio:gdx-svmhelper-annotations:$graalHelperVersion"
+  }
+}
